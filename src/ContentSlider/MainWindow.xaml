@@ -58,8 +58,10 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <local:SliderEx Contents="{StaticResource ContentsControls}"
+                        HorizontalAlignment="Stretch"
                         PageIndex="{Binding ElementName=PageSlider, Path=Value}"/>
         <Slider x:Name="PageSlider"
+                Background="LightSteelBlue"
                 Grid.Row="1" 
                 Minimum="0"
                 Maximum="2"

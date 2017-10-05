@@ -11,7 +11,6 @@ namespace ContentSlider
     /// </summary>
     public partial class SliderEx : UserControl
     {
-        //private int index = 0;
         private bool isUseFistContentGrid = true;
         private FrameworkElement currentContent;
 
@@ -60,44 +59,8 @@ namespace ContentSlider
                 newControl.Content = control.Contents.First();
                 control.currentContent = newControl;
                 control.CurrentContentGrid.Children.Add(newControl);
-                //control.index = 0;
-                //PageIndex == 0
             }
         }
-
-        //private void Next(object sender, RoutedEventArgs e)
-        //{
-        //    if (Contents != null)
-        //    {
-        //        var currentIndex = index;
-        //
-        //        index++;
-        //
-        //        if (index >= Contents.Length)
-        //        {
-        //            index = 0;
-        //        }
-        //
-        //        CreateSwipe(currentIndex, index);
-        //    }
-        //}
-        //
-        //private void Preview(object sender, RoutedEventArgs e)
-        //{
-        //    if (Contents != null)
-        //    {
-        //        var currentIndex = index;
-        //
-        //        index--;
-        //
-        //        if (index < 0)
-        //        {
-        //            index = Contents.Length - 1;
-        //        }
-        //
-        //        CreateSwipe(currentIndex, index);
-        //    }
-        //}
 
         private ContentControl CreateControl(HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center, VerticalAlignment verticalAlignment = VerticalAlignment.Center, Visibility visibility = Visibility.Collapsed)
         {

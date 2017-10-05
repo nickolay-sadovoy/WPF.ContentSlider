@@ -1,35 +1,39 @@
 ﻿<UserControl x:Class="ContentSlider.SliderEx"
-             x:Name="SliderEXControl"
+             x:Name="SliderExControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:wpf="clr-namespace:System.Windows;assembly=PresentationCore"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" >
 
     <UserControl.Resources>
         <wpf:Duration x:Key="Duration">00:00:00.5</wpf:Duration>
+        
+        <system:Double x:Key="LeftPosition">-632</system:Double>
+        <system:Double x:Key="RightPosition">632</system:Double>
 
         <CubicEase x:Key="PageEase" />
         
         <Storyboard x:Key="LeftSwipe12">
-            <DoubleAnimation Storyboard.TargetName="Page1Transform" Storyboard.TargetProperty="X" From="0" To="-632" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
-            <DoubleAnimation Storyboard.TargetName="Page2Transform" Storyboard.TargetProperty="X" From="632" To="0" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
+            <DoubleAnimation Storyboard.TargetName="Page1Transform" Storyboard.TargetProperty="X" From="0" To="{StaticResource LeftPosition}" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
+            <DoubleAnimation Storyboard.TargetName="Page2Transform" Storyboard.TargetProperty="X" From="{StaticResource RightPosition}" To="0" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
         </Storyboard>
 
         <Storyboard x:Key="LeftSwipe21">
-            <DoubleAnimation Storyboard.TargetName="Page2Transform" Storyboard.TargetProperty="X" From="0" To="-632" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
-            <DoubleAnimation Storyboard.TargetName="Page1Transform" Storyboard.TargetProperty="X" From="632" To="0" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
+            <DoubleAnimation Storyboard.TargetName="Page2Transform" Storyboard.TargetProperty="X" From="0" To="{StaticResource LeftPosition}" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
+            <DoubleAnimation Storyboard.TargetName="Page1Transform" Storyboard.TargetProperty="X" From="{StaticResource RightPosition}" To="0" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
         </Storyboard>
 
         <Storyboard x:Key="RightSwipe12">
-            <DoubleAnimation Storyboard.TargetName="Page1Transform" Storyboard.TargetProperty="X" From="0" To="632" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
-            <DoubleAnimation Storyboard.TargetName="Page2Transform" Storyboard.TargetProperty="X" From="-632" To="0" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
+            <DoubleAnimation Storyboard.TargetName="Page1Transform" Storyboard.TargetProperty="X" From="0" To="{StaticResource RightPosition}" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
+            <DoubleAnimation Storyboard.TargetName="Page2Transform" Storyboard.TargetProperty="X" From="{StaticResource LeftPosition}" To="0" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
         </Storyboard>
 
         <Storyboard x:Key="RightSwipe21">
-            <DoubleAnimation Storyboard.TargetName="Page2Transform" Storyboard.TargetProperty="X" From="0" To="632" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
-            <DoubleAnimation Storyboard.TargetName="Page1Transform" Storyboard.TargetProperty="X" From="-632" To="0" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
+            <DoubleAnimation Storyboard.TargetName="Page2Transform" Storyboard.TargetProperty="X" From="0" To="{StaticResource RightPosition}" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
+            <DoubleAnimation Storyboard.TargetName="Page1Transform" Storyboard.TargetProperty="X" From="{StaticResource LeftPosition}" To="0" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
         </Storyboard>
     </UserControl.Resources>
     
