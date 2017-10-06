@@ -70,7 +70,7 @@ namespace ContentSlider.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Step1_Line2 Step1_Line2 Step1_Line2.
+        ///   Looks up a localized string similar to Step 1 line 2.
         /// </summary>
         public static string Step1_Line2 {
             get {
@@ -79,7 +79,7 @@ namespace ContentSlider.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Step1_Line3 Step1_Line3 Step1_Line3.
+        ///   Looks up a localized string similar to Step 1 line 3.
         /// </summary>
         public static string Step1_Line3 {
             get {
@@ -97,7 +97,7 @@ namespace ContentSlider.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Step2_Line2 Step2_Line2 Step2_Line2 Step2_Line2 Step2_Line2.
+        ///   Looks up a localized string similar to Step 2 line 2.
         /// </summary>
         public static string Step2_Line2 {
             get {
@@ -106,7 +106,7 @@ namespace ContentSlider.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Step2_Line3 Step2_Line3 Step2_Line3.
+        ///   Looks up a localized string similar to Step 2 line 3.
         /// </summary>
         public static string Step2_Line3 {
             get {
@@ -124,7 +124,7 @@ namespace ContentSlider.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Step3_Line2 Step3_Line2 Step3_Line2 Step3_Line2 Step3_Line2.
+        ///   Looks up a localized string similar to Step 3 line 2.
         /// </summary>
         public static string Step3_Line2 {
             get {
@@ -133,7 +133,7 @@ namespace ContentSlider.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Step3_Line3 Step3_Line3 Step3_Line3.
+        ///   Looks up a localized string similar to Step 3 line 2.
         /// </summary>
         public static string Step3_Line3 {
             get {

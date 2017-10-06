@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media.Animation;
 
 namespace ContentSlider
@@ -24,7 +28,7 @@ namespace ContentSlider
             "PageIndex",
             typeof(int),
             typeof(SliderEx),
-            new UIPropertyMetadata(default(int), OnPageIndexChanged));
+            new UIPropertyMetadata(1, OnPageIndexChanged));
 
         private static void OnPageIndexChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -43,12 +47,29 @@ namespace ContentSlider
         public int PageIndex
         {
             get { return (int)this.GetValue(PageIndexProperty); }
-            set { SetValue(PageIndexProperty, value); }
+            set
+            {
+                if (value < 0)
+                    value = this.Contents.Length-1;
+                else if (value >= this.Contents.Length)
+                    value = 0;
+
+                SetValue(PageIndexProperty, value);
+            }
         }
 
         public SliderEx()
         {
             InitializeComponent();
+            this.KeyDown += OnSliderExKeyDown;
+        }
+
+        private void OnSliderExKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Left)
+                this.PageIndex--;
+            else if (e.Key == Key.Right)
+                this.PageIndex++;
         }
 
         private static void OnContentsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -58,13 +79,16 @@ namespace ContentSlider
                 var newControl = control.CreateControl(visibility: Visibility.Visible);
                 newControl.Content = control.Contents.First();
                 control.currentContent = newControl;
-                control.CurrentContentGrid.Children.Add(newControl);
+                control.CopyAutopmationProperties(newControl, control.CurrentContentGrid);
+
+
+                control.CurrentContentGrid.Content = newControl;
             }
         }
 
         private ContentControl CreateControl(HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center, VerticalAlignment verticalAlignment = VerticalAlignment.Center, Visibility visibility = Visibility.Collapsed)
         {
-            var newContentControl = new ContentControl() { HorizontalAlignment = horizontalAlignment, VerticalAlignment = verticalAlignment, Visibility = visibility};
+            var newContentControl = new ContentControl() { HorizontalAlignment = horizontalAlignment, VerticalAlignment = verticalAlignment, Visibility = visibility, Focusable = false };
             return newContentControl;
         }
 
@@ -73,15 +97,21 @@ namespace ContentSlider
             var newControl = CreateControl();
             newControl.Content = Contents[newPageIndex];
 
-            NewContentGrid.Children.Add(newControl);
+            CopyAutopmationProperties(Contents[newPageIndex], NewContentGrid);
+            CurrentContentGrid.Focusable = false;
+            NewContentGrid.Focusable = true;
+            NewContentGrid.Focus();
+
+            NewContentGrid.Content = newControl;
+            NewContentGrid.Visibility = Visibility.Visible;
 
             var storyboardName = "LeftSwipe12";
 
-            if(currentPageIndex > newPageIndex)
+            if (currentPageIndex > newPageIndex)
             {
                 storyboardName = isUseFistContentGrid ? "RightSwipe12" : "RightSwipe21";
             }
-            else if(!isUseFistContentGrid)
+            else if (!isUseFistContentGrid)
             {
                 storyboardName = "LeftSwipe21";
             }
@@ -89,12 +119,13 @@ namespace ContentSlider
             var s = ((Storyboard)this.Resources[storyboardName]);
 
             EventHandler handler = null;
-            handler = (sndr, evtArgs) => 
+            handler = (sndr, evtArgs) =>
             {
                 s.Completed -= handler;
                 var removeElement = currentContent;
                 currentContent = newControl;
-                CurrentContentGrid.Children.Remove(removeElement);
+                CurrentContentGrid.ClearValue(ContentProperty);
+                CurrentContentGrid.Visibility = Visibility.Collapsed;
                 isUseFistContentGrid = !isUseFistContentGrid;
             };
             s.Completed += handler;
@@ -104,10 +135,15 @@ namespace ContentSlider
             s.Begin();
         }
 
-        private Grid CurrentContentGrid => isUseFistContentGrid ? this.FirsContentGrid : this.SecondContentGrid;
+        private TabItem CurrentContentGrid => isUseFistContentGrid ? this.FirstContentGrid : this.SecondContentGrid;
 
-        private Grid NewContentGrid => isUseFistContentGrid ? this.SecondContentGrid : this.FirsContentGrid;
+        private TabItem NewContentGrid => isUseFistContentGrid ? this.SecondContentGrid : this.FirstContentGrid;
 
+        private void CopyAutopmationProperties(FrameworkElement sourceFrameworkElement, FrameworkElement targetFrameworkElement)
+        {
+            AutomationProperties.SetName(targetFrameworkElement, AutomationProperties.GetName(sourceFrameworkElement));
+            AutomationProperties.SetHelpText(targetFrameworkElement, AutomationProperties.GetHelpText(sourceFrameworkElement));
+        }
 
     }
 }

@@ -10,12 +10,12 @@
 
     <UserControl.Resources>
         <wpf:Duration x:Key="Duration">00:00:00.5</wpf:Duration>
-        
+
         <system:Double x:Key="LeftPosition">-632</system:Double>
         <system:Double x:Key="RightPosition">632</system:Double>
 
         <CubicEase x:Key="PageEase" />
-        
+
         <Storyboard x:Key="LeftSwipe12">
             <DoubleAnimation Storyboard.TargetName="Page1Transform" Storyboard.TargetProperty="X" From="0" To="{StaticResource LeftPosition}" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
             <DoubleAnimation Storyboard.TargetName="Page2Transform" Storyboard.TargetProperty="X" From="{StaticResource RightPosition}" To="0" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
@@ -35,18 +35,27 @@
             <DoubleAnimation Storyboard.TargetName="Page2Transform" Storyboard.TargetProperty="X" From="0" To="{StaticResource RightPosition}" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
             <DoubleAnimation Storyboard.TargetName="Page1Transform" Storyboard.TargetProperty="X" From="{StaticResource LeftPosition}" To="0" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
         </Storyboard>
+        <Style TargetType="{x:Type TabItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <ContentPresenter Content="{TemplateBinding Content}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
-    
+
     <Grid>
-        <Grid x:Name="FirsContentGrid">
-            <Grid.RenderTransform>
-                <TranslateTransform x:Name="Page1Transform" X="0"/>
-            </Grid.RenderTransform>
-        </Grid>
-        <Grid x:Name="SecondContentGrid">
-            <Grid.RenderTransform>
-                <TranslateTransform x:Name="Page2Transform" X="0"/>
-            </Grid.RenderTransform>
-        </Grid>
+        <TabItem x:Name="FirstContentGrid" Focusable="True" AutomationProperties.ItemType="pane">
+            <TabItem.RenderTransform>
+                <TranslateTransform x:Name="Page1Transform" />
+            </TabItem.RenderTransform>
+        </TabItem>
+        <TabItem x:Name="SecondContentGrid" Focusable="False" Visibility="Collapsed">
+            <TabItem.RenderTransform>
+                <TranslateTransform x:Name="Page2Transform"/>
+            </TabItem.RenderTransform>
+        </TabItem>
     </Grid>
 </UserControl>

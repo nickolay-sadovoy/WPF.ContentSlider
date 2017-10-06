@@ -1,7 +1,6 @@
 ﻿<Window x:Class="ContentSlider.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:ContentSlider"
         xmlns:Properties="clr-namespace:ContentSlider.Properties"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
@@ -11,6 +10,7 @@
         Background="Bisque">
 
     <Window.Resources>
+        
         <sys:Double x:Key="PanelWidth">550</sys:Double>
         <CubicEase x:Key="PageEase" />
         <Style x:Key="Message" TargetType="TextBlock" >
@@ -29,25 +29,37 @@
 
         <x:Array x:Key="ContentsControls" Type="{x:Type FrameworkElement}">
             <StackPanel Width="{StaticResource PanelWidth}"
-                        Background="Red">
-                <Image  Width="536" Height="330" Stretch="Uniform" VerticalAlignment="Center" />
+                        Background="Red"
+                        AutomationProperties.Name="{x:Static Properties:Resources.Step1_Line2}">
+                <Image  Width="536" Height="330" Stretch="Uniform" VerticalAlignment="Center" Focusable="False"/>
                 <TextBlock Style="{StaticResource PageIndicator}" Text="{x:Static Properties:Resources.Step1_Line1}"/>
-                <TextBlock Style="{StaticResource Message}" Text="{x:Static Properties:Resources.Step1_Line2}"/>
-                <TextBlock Style="{StaticResource Message}" Text="{x:Static Properties:Resources.Step1_Line3}"/>
+                <TextBlock Style="{StaticResource Message}" x:Name="DescriptionTextBlock" >
+                    <Run Text="{x:Static Properties:Resources.Step1_Line2}"/>
+                    <LineBreak/>
+                    <Run Text="{x:Static Properties:Resources.Step1_Line3}"/>
+                </TextBlock>
             </StackPanel>
             <StackPanel Width="{StaticResource PanelWidth}"
-                        Background="Green">
-                <Image  Width="536" Height="330" Stretch="Uniform" VerticalAlignment="Center" />
+                        Background="Green"
+                        AutomationProperties.Name="{x:Static Properties:Resources.Step2_Line2}">
+                <Image  Width="536" Height="330" Stretch="Uniform" VerticalAlignment="Center" Focusable="False"/>
                 <TextBlock Style="{StaticResource PageIndicator}" Text="{x:Static Properties:Resources.Step2_Line1}"/>
-                <TextBlock Style="{StaticResource Message}" Text="{x:Static Properties:Resources.Step2_Line2}"/>
-                <TextBlock Style="{StaticResource Message}" Text="{x:Static Properties:Resources.Step2_Line3}"/>
+                <TextBlock Style="{StaticResource Message}" x:Name="Description2TextBlock" >
+                    <Run Text="{x:Static Properties:Resources.Step2_Line2}"/>
+                    <LineBreak/>
+                    <Run Text="{x:Static Properties:Resources.Step2_Line3}"/>
+                </TextBlock>
             </StackPanel>
             <StackPanel Width="{StaticResource PanelWidth}"
-                        Background="Blue">
+                        Background="Blue"
+                        AutomationProperties.Name="{x:Static Properties:Resources.Step3_Line2}">
                 <Image  Width="536" Height="330" Stretch="Uniform" VerticalAlignment="Center" />
                 <TextBlock Style="{StaticResource PageIndicator}" Text="{x:Static Properties:Resources.Step3_Line1}"/>
-                <TextBlock Style="{StaticResource Message}" Text="{x:Static Properties:Resources.Step3_Line2}"/>
-                <TextBlock Style="{StaticResource Message}" Text="{x:Static Properties:Resources.Step3_Line3}"/>
+                <TextBlock Style="{StaticResource Message}" x:Name="Description3TextBlock" >
+                    <Run Text="{x:Static Properties:Resources.Step3_Line2}"/>
+                    <LineBreak/>
+                    <Run Text="{x:Static Properties:Resources.Step3_Line3}"/>
+                </TextBlock>
             </StackPanel>
         </x:Array>
     </Window.Resources>
@@ -55,16 +67,11 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <local:SliderEx Contents="{StaticResource ContentsControls}"
                         HorizontalAlignment="Stretch"
+                        Focusable="True"
                         PageIndex="{Binding ElementName=PageSlider, Path=Value}"/>
-        <Slider x:Name="PageSlider"
-                Background="LightSteelBlue"
-                Grid.Row="1" 
-                Minimum="0"
-                Maximum="2"
-                Margin="24"/>
+
     </Grid>
 </Window>
