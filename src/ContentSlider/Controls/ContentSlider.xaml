@@ -47,15 +47,15 @@
     </UserControl.Resources>
 
     <Grid>
-        <TabItem x:Name="FirstContentGrid" Focusable="True" AutomationProperties.ItemType="pane">
-            <TabItem.RenderTransform>
+        <Grid x:Name="FirstContentGrid" Focusable="True" AutomationProperties.ItemType="pane">
+            <Grid.RenderTransform>
                 <TranslateTransform x:Name="Page1Transform" />
-            </TabItem.RenderTransform>
-        </TabItem>
-        <TabItem x:Name="SecondContentGrid" Focusable="False" Visibility="Collapsed">
-            <TabItem.RenderTransform>
+            </Grid.RenderTransform>
+        </Grid>
+        <Grid x:Name="SecondContentGrid" Focusable="False" Visibility="Collapsed">
+            <Grid.RenderTransform>
                 <TranslateTransform x:Name="Page2Transform"/>
-            </TabItem.RenderTransform>
-        </TabItem>
+            </Grid.RenderTransform>
+        </Grid>
     </Grid>
 </UserControl>

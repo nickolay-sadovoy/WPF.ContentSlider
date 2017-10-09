@@ -82,7 +82,8 @@ namespace ContentSlider
                 control.CopyAutopmationProperties(newControl, control.CurrentContentGrid);
 
 
-                control.CurrentContentGrid.Content = newControl;
+                //control.CurrentContentGrid.Content = newControl;
+                control.NewContentGrid.Children.Add(newControl);
             }
         }
 
@@ -102,7 +103,8 @@ namespace ContentSlider
             NewContentGrid.Focusable = true;
             NewContentGrid.Focus();
 
-            NewContentGrid.Content = newControl;
+            //NewContentGrid.Content = newControl;
+            NewContentGrid.Children.Add(newControl);
             NewContentGrid.Visibility = Visibility.Visible;
 
             var storyboardName = "LeftSwipe12";
@@ -125,8 +127,10 @@ namespace ContentSlider
                 var removeElement = currentContent;
                 currentContent = newControl;
                 CurrentContentGrid.ClearValue(ContentProperty);
-                CurrentContentGrid.Visibility = Visibility.Collapsed;
+                CurrentContentGrid.Children.Remove(removeElement);
+                //CurrentContentGrid.Visibility = Visibility.Collapsed;
                 isUseFistContentGrid = !isUseFistContentGrid;
+                
             };
             s.Completed += handler;
 
@@ -135,9 +139,9 @@ namespace ContentSlider
             s.Begin();
         }
 
-        private TabItem CurrentContentGrid => isUseFistContentGrid ? this.FirstContentGrid : this.SecondContentGrid;
+        private Grid CurrentContentGrid => isUseFistContentGrid ? this.FirstContentGrid : this.SecondContentGrid;
 
-        private TabItem NewContentGrid => isUseFistContentGrid ? this.SecondContentGrid : this.FirstContentGrid;
+        private Grid NewContentGrid => isUseFistContentGrid ? this.SecondContentGrid : this.FirstContentGrid;
 
         private void CopyAutopmationProperties(FrameworkElement sourceFrameworkElement, FrameworkElement targetFrameworkElement)
         {
@@ -145,5 +149,12 @@ namespace ContentSlider
             AutomationProperties.SetHelpText(targetFrameworkElement, AutomationProperties.GetHelpText(sourceFrameworkElement));
         }
 
+    }
+
+    public class ExtendedTabControl : TabControl
+    {
+        public ExtendedTabControl()
+        {
+        }
     }
 }
