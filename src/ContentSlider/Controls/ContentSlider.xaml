@@ -35,27 +35,23 @@
             <DoubleAnimation Storyboard.TargetName="Page2Transform" Storyboard.TargetProperty="X" From="0" To="{StaticResource RightPosition}" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
             <DoubleAnimation Storyboard.TargetName="Page1Transform" Storyboard.TargetProperty="X" From="{StaticResource LeftPosition}" To="0" Duration="{StaticResource Duration}" EasingFunction="{StaticResource PageEase}"/>
         </Storyboard>
-        <Style TargetType="{x:Type TabItem}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TabItem}">
-                        <ContentPresenter Content="{TemplateBinding Content}"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+       
     </UserControl.Resources>
 
     <Grid>
-        <Grid x:Name="FirstContentGrid" Focusable="True">
-            <Grid.RenderTransform>
-                <TranslateTransform x:Name="Page1Transform" />
-            </Grid.RenderTransform>
-        </Grid>
-        <Grid x:Name="SecondContentGrid" Focusable="False">
-            <Grid.RenderTransform>
-                <TranslateTransform x:Name="Page2Transform"/>
-            </Grid.RenderTransform>
+        <Grid Focusable="True">
+            <TextBlock x:Name="AccesibilityHelpBlock" Visibility="Collapsed" Focusable="True" Text="narrator have to reed it"/>
+
+            <Grid x:Name="FirstContentGrid">
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="Page1Transform" />
+                </Grid.RenderTransform>
+            </Grid>
+            <Grid x:Name="SecondContentGrid">
+                <Grid.RenderTransform>
+                    <TranslateTransform x:Name="Page2Transform"/>
+                </Grid.RenderTransform>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

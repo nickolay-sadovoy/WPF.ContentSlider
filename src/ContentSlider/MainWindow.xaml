@@ -26,7 +26,7 @@
             <Setter Property="Height" Value="4"/>
         </Style>
 
-        <x:Array x:Key="ContentsControls" Type="{x:Type FrameworkElement}">
+        <x:Array x:Key="StackPanels" Type="{x:Type StackPanel}">
             <StackPanel Width="{StaticResource PanelWidth}"
                         Background="Red"
                         AutomationProperties.Name="{x:Static Properties:Resources.Step1_Line2}">
@@ -65,15 +65,9 @@
     </Window.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        
-        <local:SliderEx Contents="{StaticResource ContentsControls}"
+        <local:SliderEx StackPanels="{StaticResource StackPanels}"
                         HorizontalAlignment="Stretch"
                         Focusable="True"
                         PageIndex="{Binding ElementName=PageSlider, Path=Value}"/>
-
-        
     </Grid>
 </Window>
