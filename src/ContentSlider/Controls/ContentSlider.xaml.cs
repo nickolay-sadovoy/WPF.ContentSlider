@@ -52,7 +52,7 @@ namespace ContentSlider
                 SetValue(PageIndexProperty, value);
             }
         }
-
+       
         public SliderEx()
         {
             InitializeComponent();
@@ -96,18 +96,13 @@ namespace ContentSlider
             //todo: work with focus
 
             NewContentGrid.Children.Add(newControl);
-            //NewContentGrid.Visibility = Visibility.Visible;
 
-            var storyboardName = "LeftSwipe12";
+            var storyboardName = SliderSettings.PreviewContentFrom1To2StoryBoard;
 
             if (currentPageIndex > newPageIndex)
-            {
-                storyboardName = isUseFistContentGrid ? "RightSwipe12" : "RightSwipe21";
-            }
+                storyboardName = isUseFistContentGrid ? SliderSettings.NextContentFrom1To2StoryBoard : SliderSettings.NextContentFrom2To1StoryBoard;
             else if (!isUseFistContentGrid)
-            {
-                storyboardName = "LeftSwipe21";
-            }
+                storyboardName = SliderSettings.PreviewContentFrom2To1StoryBoard;
 
             var s = ((Storyboard)this.Resources[storyboardName]);
 
@@ -118,7 +113,6 @@ namespace ContentSlider
                 var removeElement = currentContent;
                 currentContent = newControl;
                 CurrentContentGrid.Children.Remove(removeElement);
-                //Visibility = Visibility.Collapsed;
                 isUseFistContentGrid = !isUseFistContentGrid;
                 
             };
@@ -141,10 +135,13 @@ namespace ContentSlider
 
     }
 
-    public class ExtendedTabControl : TabControl
+    public static class SliderSettings
     {
-        public ExtendedTabControl()
-        {
-        }
+        public static string PreviewContentFrom1To2StoryBoard => "LeftSwipe12";
+        public static string PreviewContentFrom2To1StoryBoard => "LeftSwipe21";
+        public static string NextContentFrom1To2StoryBoard => "RightSwipe12";
+        public static string NextContentFrom2To1StoryBoard => "RightSwipe21";
+
+
     }
 }
