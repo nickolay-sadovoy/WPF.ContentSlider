@@ -40,8 +40,6 @@
 
     <Grid>
         <Grid Focusable="True">
-            <TextBlock x:Name="AccesibilityHelpBlock" Visibility="Collapsed" Focusable="True" Text="narrator have to reed it"/>
-
             <Grid x:Name="FirstContentGrid">
                 <Grid.RenderTransform>
                     <TranslateTransform x:Name="Page1Transform" />
