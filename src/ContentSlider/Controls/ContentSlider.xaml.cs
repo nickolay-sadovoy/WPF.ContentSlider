@@ -13,6 +13,8 @@ namespace ContentSlider
     {
         private bool isUseFistContentGrid = true;
         private FrameworkElement currentContent;
+        private Grid CurrentContentGrid => isUseFistContentGrid ? FirstContentGrid : SecondContentGrid;
+        private Grid NewContentGrid => isUseFistContentGrid ? SecondContentGrid : FirstContentGrid;
 
         public static readonly DependencyProperty ContensProperty = DependencyProperty.Register(
             "StackPanels",
@@ -36,18 +38,18 @@ namespace ContentSlider
 
         public StackPanel[] StackPanels
         {
-            get { return (StackPanel[])this.GetValue(ContensProperty); }
+            get { return (StackPanel[])GetValue(ContensProperty); }
             set { SetValue(ContensProperty, value); }
         }
 
         public int PageIndex
         {
-            get { return (int)this.GetValue(PageIndexProperty); }
+            get { return (int)GetValue(PageIndexProperty); }
             set
             {
                 if (value < 0)
-                    value = this.StackPanels.Length-1;
-                else if (value >= this.StackPanels.Length)
+                    value = StackPanels.Length-1;
+                else if (value >= StackPanels.Length)
                     value = 0;
 
                 SetValue(PageIndexProperty, value);
@@ -58,15 +60,21 @@ namespace ContentSlider
         {
             InitializeComponent();
 
-            this.KeyDown += OnSliderExKeyDown;
+            KeyDown += OnSliderExKeyDown;
+            GotFocus += OnliderExGotFocus;
+        }
+
+        private void OnliderExGotFocus(object sender, RoutedEventArgs e)
+        {
+            TryReadAutomationProperties(StackPanels[PageIndex]);
         }
 
         private void OnSliderExKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Left)
-                this.PageIndex--;
+                PageIndex--;
             else if (e.Key == Key.Right)
-                this.PageIndex++;
+                PageIndex++;
         }
 
         private static void OnContentsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -103,7 +111,7 @@ namespace ContentSlider
             else if (!isUseFistContentGrid)
                 storyboardName = SliderSettings.PreviewContentFrom2To1StoryBoard;
 
-            var s = ((Storyboard)this.Resources[storyboardName]);
+            var s = ((Storyboard)Resources[storyboardName]);
 
             EventHandler handler = null;
             handler = (sndr, evtArgs) =>
@@ -138,12 +146,7 @@ namespace ContentSlider
                 }
             }
         }
-
-
-        private Grid CurrentContentGrid => isUseFistContentGrid ? this.FirstContentGrid : this.SecondContentGrid;
-
-        private Grid NewContentGrid => isUseFistContentGrid ? this.SecondContentGrid : this.FirstContentGrid;
-
+        
         private void CopyAutopmationProperties(FrameworkElement sourceFrameworkElement, FrameworkElement targetFrameworkElement)
         {
             AutomationProperties.SetName(targetFrameworkElement, AutomationProperties.GetName(sourceFrameworkElement));
