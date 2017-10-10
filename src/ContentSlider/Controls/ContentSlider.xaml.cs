@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Automation;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
@@ -14,16 +15,16 @@ namespace ContentSlider
         private FrameworkElement currentContent;
 
         public static readonly DependencyProperty ContensProperty = DependencyProperty.Register(
-            "Contents",
-            typeof(FrameworkElement[]),
+            "StackPanels",
+            typeof(StackPanel[]),
             typeof(SliderEx),
-            new UIPropertyMetadata(default(FrameworkElement[]), OnContentsChanged));
+            new UIPropertyMetadata(default(StackPanel[]), OnContentsChanged));
 
         public static readonly DependencyProperty PageIndexProperty = DependencyProperty.Register(
             "PageIndex",
             typeof(int),
             typeof(SliderEx),
-            new UIPropertyMetadata(1, OnPageIndexChanged));
+            new UIPropertyMetadata(default(int), OnPageIndexChanged));
 
         private static void OnPageIndexChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -33,9 +34,9 @@ namespace ContentSlider
             }
         }
 
-        public FrameworkElement[] Contents
+        public StackPanel[] StackPanels
         {
-            get { return (FrameworkElement[])this.GetValue(ContensProperty); }
+            get { return (StackPanel[])this.GetValue(ContensProperty); }
             set { SetValue(ContensProperty, value); }
         }
 
@@ -45,8 +46,8 @@ namespace ContentSlider
             set
             {
                 if (value < 0)
-                    value = this.Contents.Length-1;
-                else if (value >= this.Contents.Length)
+                    value = this.StackPanels.Length-1;
+                else if (value >= this.StackPanels.Length)
                     value = 0;
 
                 SetValue(PageIndexProperty, value);
@@ -56,6 +57,7 @@ namespace ContentSlider
         public SliderEx()
         {
             InitializeComponent();
+
             this.KeyDown += OnSliderExKeyDown;
         }
 
@@ -69,12 +71,13 @@ namespace ContentSlider
 
         private static void OnContentsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is SliderEx control && control.Contents != null && control.Contents.Any())
+            if (d is SliderEx control && control.StackPanels != null && control.StackPanels.Any())
             {
                 var newControl = control.CreateControl(visibility: Visibility.Visible);
-                newControl.Content = control.Contents.First();
+                var stackPanel = newControl.Content = control.StackPanels.First();
                 control.currentContent = newControl;
-                control.CopyAutopmationProperties(newControl, control.CurrentContentGrid);
+
+                control.TryReadAutomationProperties((StackPanel)stackPanel);
 
                 control.NewContentGrid.Children.Add(newControl);
             }
@@ -89,11 +92,7 @@ namespace ContentSlider
         private void CreateSwipe(int currentPageIndex, int newPageIndex)
         {
             var newControl = CreateControl();
-            newControl.Content = Contents[newPageIndex];
-
-            CopyAutopmationProperties(Contents[newPageIndex], NewContentGrid);
-            
-            //todo: work with focus
+            newControl.Content = StackPanels[newPageIndex];
 
             NewContentGrid.Children.Add(newControl);
 
@@ -114,7 +113,8 @@ namespace ContentSlider
                 currentContent = newControl;
                 CurrentContentGrid.Children.Remove(removeElement);
                 isUseFistContentGrid = !isUseFistContentGrid;
-                
+                TryReadAutomationProperties(StackPanels[newPageIndex]);
+
             };
             s.Completed += handler;
 
@@ -123,17 +123,34 @@ namespace ContentSlider
             s.Begin();
         }
 
-        private Panel CurrentContentGrid => isUseFistContentGrid ? this.FirstContentGrid : this.SecondContentGrid;
+        private void TryReadAutomationProperties(StackPanel stackPanel)
+        {
+            var textblocks = stackPanel?.Children.OfType<TextBlock>();
 
-        private Panel NewContentGrid => isUseFistContentGrid ? this.SecondContentGrid : this.FirstContentGrid;
+            if (textblocks != null)
+            {
+                AutomationPeer peer = null;
+
+                foreach (TextBlock textBlock in textblocks)
+                {
+                    peer = TextBlockAutomationPeer.FromElement(textBlock);
+                    peer?.RaiseAutomationEvent(AutomationEvents.MenuOpened);
+                }
+            }
+        }
+
+
+        private Grid CurrentContentGrid => isUseFistContentGrid ? this.FirstContentGrid : this.SecondContentGrid;
+
+        private Grid NewContentGrid => isUseFistContentGrid ? this.SecondContentGrid : this.FirstContentGrid;
 
         private void CopyAutopmationProperties(FrameworkElement sourceFrameworkElement, FrameworkElement targetFrameworkElement)
         {
             AutomationProperties.SetName(targetFrameworkElement, AutomationProperties.GetName(sourceFrameworkElement));
             AutomationProperties.SetHelpText(targetFrameworkElement, AutomationProperties.GetHelpText(sourceFrameworkElement));
         }
-
     }
+
 
     public static class SliderSettings
     {
@@ -141,7 +158,5 @@ namespace ContentSlider
         public static string PreviewContentFrom2To1StoryBoard => "LeftSwipe21";
         public static string NextContentFrom1To2StoryBoard => "RightSwipe12";
         public static string NextContentFrom2To1StoryBoard => "RightSwipe21";
-
-
     }
 }
