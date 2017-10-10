@@ -47,12 +47,12 @@
     </UserControl.Resources>
 
     <Grid>
-        <Grid x:Name="FirstContentGrid" Focusable="True" AutomationProperties.ItemType="pane">
+        <Grid x:Name="FirstContentGrid" Focusable="True">
             <Grid.RenderTransform>
                 <TranslateTransform x:Name="Page1Transform" />
             </Grid.RenderTransform>
         </Grid>
-        <Grid x:Name="SecondContentGrid" Focusable="False" Visibility="Collapsed">
+        <Grid x:Name="SecondContentGrid" Focusable="False">
             <Grid.RenderTransform>
                 <TranslateTransform x:Name="Page2Transform"/>
             </Grid.RenderTransform>

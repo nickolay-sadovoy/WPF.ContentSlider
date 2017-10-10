@@ -3,16 +3,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 
 namespace ContentSlider
 {
-    /// <summary>
-    /// Interaction logic for ContentSlider.xaml
-    /// </summary>
     public partial class SliderEx : UserControl
     {
         private bool isUseFistContentGrid = true;
@@ -81,8 +76,6 @@ namespace ContentSlider
                 control.currentContent = newControl;
                 control.CopyAutopmationProperties(newControl, control.CurrentContentGrid);
 
-
-                //control.CurrentContentGrid.Content = newControl;
                 control.NewContentGrid.Children.Add(newControl);
             }
         }
@@ -99,13 +92,11 @@ namespace ContentSlider
             newControl.Content = Contents[newPageIndex];
 
             CopyAutopmationProperties(Contents[newPageIndex], NewContentGrid);
-            CurrentContentGrid.Focusable = false;
-            NewContentGrid.Focusable = true;
-            NewContentGrid.Focus();
+            
+            //todo: work with focus
 
-            //NewContentGrid.Content = newControl;
             NewContentGrid.Children.Add(newControl);
-            NewContentGrid.Visibility = Visibility.Visible;
+            //NewContentGrid.Visibility = Visibility.Visible;
 
             var storyboardName = "LeftSwipe12";
 
@@ -126,9 +117,8 @@ namespace ContentSlider
                 s.Completed -= handler;
                 var removeElement = currentContent;
                 currentContent = newControl;
-                CurrentContentGrid.ClearValue(ContentProperty);
                 CurrentContentGrid.Children.Remove(removeElement);
-                //CurrentContentGrid.Visibility = Visibility.Collapsed;
+                //Visibility = Visibility.Collapsed;
                 isUseFistContentGrid = !isUseFistContentGrid;
                 
             };
@@ -139,9 +129,9 @@ namespace ContentSlider
             s.Begin();
         }
 
-        private Grid CurrentContentGrid => isUseFistContentGrid ? this.FirstContentGrid : this.SecondContentGrid;
+        private Panel CurrentContentGrid => isUseFistContentGrid ? this.FirstContentGrid : this.SecondContentGrid;
 
-        private Grid NewContentGrid => isUseFistContentGrid ? this.SecondContentGrid : this.FirstContentGrid;
+        private Panel NewContentGrid => isUseFistContentGrid ? this.SecondContentGrid : this.FirstContentGrid;
 
         private void CopyAutopmationProperties(FrameworkElement sourceFrameworkElement, FrameworkElement targetFrameworkElement)
         {
